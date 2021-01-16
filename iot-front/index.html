@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Variable de temperature</title>
         <link href="source/style.css" rel="stylesheet" media="all"/>
+        <script src="source/script/script.js" ></script>
     </head>
     <body>
         <img class="img" src="./img/sun.svg"/>
         <div class="block stats-block display-flex">
             <div class="stats-block-header">
-                <div>c</div>
-                <h1>Sonde cesi</h1>
-                <a class="share"><img width="12px" src="img/share-variant.svg"></a>
-
+                <a class="button"><img class="svg-share" src="img/cog.svg"></a>
+                <h1 class="stats-title">Sonde cesi</h1>
+                <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
             </div>
             <div class="stats">
                 <div class="stat">
-                    <h6>Degrés :</h6>
+                    <img class="img-stats" src="img/thermometer.svg">
                     <p>45°</p>
                 </div>
                 <div class="divider"></div>
                 <div class="stat">
-                    <h6>Humidité :</h6>
+                    <img class="img-stats" src="img/water.svg">
                     <p>60%</p>
                 </div>
             </div>
@@ -44,7 +45,7 @@
             </a>
         </div>
         <div class="block emoji-block">
-
+            <div id="test"></div>
         </div>
     </body>
     <footer>
