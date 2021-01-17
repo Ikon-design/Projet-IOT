@@ -19,7 +19,6 @@ fetch('https://ghibliapi.herokuapp.com/films/')
         test.textContent = movie.title
         const h1 = document.createElement('h1')
         h1.textContent = movie.title
-        console.log('wesh ca push')
       })
 
     console.log(data)
