@@ -1,56 +1,80 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Variable de temperature</title>
-        <link href="source/style.css" rel="stylesheet" media="all"/>
-        <script src="source/script/script.js" ></script>
-        <!-- <meta http-equiv="refresh" contsent="5"> -->
-    </head>
-    <body>
-        <img class="img" src="./img/sun.svg"/>
-        <div class="block stats-block display-flex">
-            <div class="stats-block-header">
-                <a class="button"><img class="svg-share" src="img/cog.svg"></a>
-                <h1 class="stats-title">Sonde cesi</h1>
-                <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
-                <div> Longitude : <div id="longitude_value"></div></div>
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <img class="img-stats" src="img/thermometer.svg">
-                    <p>45°</p>
-                </div>
-                <div class="divider"></div>
-                <div class="stat">
-                    <img class="img-stats" src="img/water.svg">
-                    <p>60%</p>
-                </div>
-            </div>
-            <div class="divider-horizontal">
 
+<head>
+    <title>Variable de temperature</title>
+    <link href="source/style.css" rel="stylesheet" media="all" />
+    <!-- <meta http-equiv="refresh" contsent="5"> -->
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <img class="img" src="./img/sun.svg" />
+    <div class="block stats-block display-flex">
+        <div class="stats-block-header">
+            <button class="button" id="openParamsDialog"><img class="svg-share" src="img/cog.svg"></button>
+            <h1 id="probeName" class="stats-title"></h1>
+            <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <img class="img-stats" src="img/thermometer.svg">
+                <p id="temperature"></p>
             </div>
+            <div class="divider"></div>
+            <div class="stat">
+                <img class="img-stats" src="img/water.svg">
+                <p id="humidity"></p>
+            </div>
+        </div>
+        <div class="divider-horizontal">
+
+        </div>
+        <div class="graph-block">
             <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
             <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
         </div>
-        <div class="antenna-block display-flex">
-            <a class="block display-flex antenna">
-                <img class="svg"  src='img/antenna.svg'/>
-                <p>Sonde cesi</p>
-            </a>
-            <a class="block display-flex antenna">
-                <img class="svg" src='img/antenna.svg'/>
-                <p>Sonde cesi</p>
-            </a>
-            <a class="block display-flex antenna">
-                <img class="svg"  src='img/antenna.svg'/>
-                <p>Sonde cesi</p>
-            </a>
-        </div>
-        <div class="block emoji-block">
-            <div id="test"></div>
-        </div>
-    </body>
-    <footer>
-    
-    </footer>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2597.533091923707!2d1.0718805156585605!3d49.37990707934198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDIyJzQ3LjciTiAxwrAwNCcyNi43IkU!5e0!3m2!1sfr!2sfr!4v1611210744249!5m2!1sfr!2sfr"
+            width="90%" height="200" frameborder="0"
+            style="border:0;border-radius: 20px;margin-bottom: 40px;box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);"
+            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <div class="block emoji-block">
+        <div id="test"></div>
+    </div>
+    <dialog id="params" class='dialog' open>
+        <form>
+            <div class="form">
+                <h3>Parametres</h3>
+                <div class="display-flex">
+                    <div>
+                        <h6>Nom de la sonde</h6>
+                        <input id="currentProbeName" placeholder="Nom de la sonde" type="text"></input>
+                    </div>
+                    <div>
+                        <h6>Adresse IP</h6>
+                        <input id="currentProbeIPAdresse" placeholder="Adresse IP" type="text">
+                    </div>
+                </div>
+                <div class="display-flex">
+                    <div>
+                        <h6>Longitude</h6>
+                        <input id="currentProbeLongitude" placeholder="Longitude" type="text">
+                    </div>
+                    <div>
+                        <h6>Latitude</h6>
+                        <input id="currentProbeLatitude" placeholder="Latitude" type="text">
+                    </div>
+                </div>
+                <input type="checkbox">
+            </div>
+        </form>
+    </dialog>
+    <script src="source/script/script.js"></script>
+</body>
+<footer>
+
+</footer>
+
 </html>
