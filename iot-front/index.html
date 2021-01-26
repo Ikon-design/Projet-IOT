@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html id="background">
 
 <head>
     <title>Variable de temperature</title>
     <link href="source/style.css" rel="stylesheet" media="all" />
-    <!-- <meta http-equiv="refresh" contsent="5"> -->
+    <meta http-equiv="refresh" contsent="1">
     <meta charset="UTF-8">
 </head>
 
@@ -12,7 +12,7 @@
     <img class="img" src="./img/sun.svg" />
     <div class="block stats-block display-flex">
         <div class="stats-block-header">
-            <button class="button" id="openParamsDialog"><img class="svg-share" src="img/cog.svg"></button>
+            <button class="button" onclick="openDial()"><img class="svg-share" src="img/cog.svg"></button>
             <h1 id="probeName" class="stats-title"></h1>
             <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
         </div>
@@ -41,36 +41,49 @@
             allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
     </div>
     <div class="block emoji-block">
-        <div id="test"></div>
+        <div id="emoji1"></div>
+        <div id="emoji2"></div>
+        <div id="emoji3"></div>
+        <div id="emoji4"></div>
     </div>
-    <dialog id="params" class='dialog' open>
-        <form>
+    <dialog id="params" class='dialog'>
+        <form method="dialog">      
             <div class="form">
-                <h3>Parametres</h3>
-                <div class="display-flex">
-                    <div>
-                        <h6>Nom de la sonde</h6>
+                <h3>Paramètres</h3>
+                <select class="select">
+                    <option>Seci</option>
+                    <option>Seci2</option>
+                </select>
+                <div class="display-flex form-block">
+                    
+                    <div class="input">
+                        <h6>Nom de la sonde :</h6>
                         <input id="currentProbeName" placeholder="Nom de la sonde" type="text"></input>
                     </div>
-                    <div>
-                        <h6>Adresse IP</h6>
+                    <div class="input">
+                        <h6>Adresse IP :</h6>
                         <input id="currentProbeIPAdresse" placeholder="Adresse IP" type="text">
                     </div>
                 </div>
-                <div class="display-flex">
-                    <div>
-                        <h6>Longitude</h6>
+                <div class="display-flex form-block">
+                    <div class="input">
+                        <h6>Longitude :</h6>
                         <input id="currentProbeLongitude" placeholder="Longitude" type="text">
                     </div>
-                    <div>
-                        <h6>Latitude</h6>
+                    <div class="input">
+                        <h6>Latitude :</h6>
                         <input id="currentProbeLatitude" placeholder="Latitude" type="text">
                     </div>
                 </div>
-                <input type="checkbox">
+                <div class="checkbox-block">
+                    <input class="checkbox" type="checkbox">
+                    <div>Activée</div>
+                </div>
+                <button class="dialog-button" onclick="closeDial()">Valider</button>
             </div>
         </form>
     </dialog>
+    <img src="img/background.svg" id="background" class="background">
     <script src="source/script/script.js"></script>
 </body>
 <footer>
