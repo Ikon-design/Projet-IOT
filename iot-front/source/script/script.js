@@ -18,18 +18,45 @@ fetch('http://192.168.97.2:5000')
     return response.json()
   })
   .then((data) => {
+    let temperature = (data[0][4])
+    let humidity = (data[0][5])
 
+    let logo = getElementById('witness')
+    switch (humidity && temperature){
+      case 0:{
+        humidity < 100
+        temperature < 0
+        logo.src = "../../img/cloud.svg"
+        break;}
+      case 1:{
+        humidity < 25
+        temperature < 0
+        logo.src = "../../img/cloud.svg"
+        break;}
+      case 2:{
+        humidity < 25
+        temperature > 30
+        logo.src = "../../img/sun.svg"
+        break;}
+      case 3:{
+        humidity > 100
+        temperature >= 0
+        logo.src = "../../img/cloud.svg"
+        break;}
+    }
+    
     //Data accueil
     document.getElementById('probeName').innerHTML = (data[0][3])
     console.log(data[0])
     document.getElementById('temperature').innerHTML = (data[0][4] + '°')
     document.getElementById('humidity').innerHTML = (data[0][5] + '%')
-    // title.textContent = data.currentProbe.currentName
+
 
     // Dialog
     document.getElementById('currentProbeName').value = (data[0][3])
     document.getElementById('currentProbeLongitude').value = (data[0][1])
     document.getElementById('currentProbeLatitude').value = (data[0][2])
+
   })
   .catch((err) => {
     console.log(err)
@@ -45,19 +72,4 @@ function openDial() {
 function closeDial() {
   dial.style.display = 'none'
   dial.close()
-}
-
-const time = (int) new Date()time.getTime()
-time.getTime()
-console.log(time)
-
-
-var houres = 0
-var minutes = 0
-var seconde = 0
-
-for (var rotate = 0; rotate <= 86400; rotate++) {
-  var bg = document.getElementById('background')
-  console.log(rotate)
-  bg.style.transform = 'rotate(' + rotate + 'deg);'
 }
