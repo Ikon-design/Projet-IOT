@@ -21,12 +21,12 @@ fetch('http://192.168.97.2:5000')
     let temperature = (data[0][4])
     let humidity = (data[0][5])
 
-    let logo = getElementById('witness')
+    let logo = document.getElementById('witness')
     switch (humidity && temperature){
       case 0:{
         humidity < 100
         temperature < 0
-        logo.src = "../../img/cloud.svg"
+        logo.src = "./img/cloud.svg"
         break;}
       case 1:{
         humidity < 25
