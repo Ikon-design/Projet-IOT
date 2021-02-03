@@ -12,7 +12,7 @@
     <img id="witness" class="img" />
     <div class="block stats-block display-flex">
         <div class="stats-block-header">
-            <button class="button" onclick="openDial()"><img class="svg-share" src="img/cog.svg"></button>
+            <button class="button" onclick="openDial(), test()"><img class="svg-share" src="img/cog.svg"></button>
             <h1 id="probeName" class="stats-title"></h1>
             <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
         </div>
@@ -34,12 +34,12 @@
             <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
             <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
         </div>
-        <iframe
+        <!-- <iframe
         class="map"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2597.533091923707!2d1.0718805156585605!3d49.37990707934198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDIyJzQ3LjciTiAxwrAwNCcyNi43IkU!5e0!3m2!1sfr!2sfr!4v1611210744249!5m2!1sfr!2sfr"
              height="200" frameborder="0"
             style="border:0;border-radius: 20px;margin-bottom: 40px;box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);"
-            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
     </div>
     <div class="block emoji-block">
         <div id="emoji1"></div>
@@ -51,9 +51,8 @@
         <form method="dialog">      
             <div class="form">
                 <h3>Paramètres</h3>
-                <select class="select">
-                    <option>Seci</option>
-                    <option>Seci2</option>
+                <select class="select" id="probeList" onclick="">
+                    <option selected id="currentProbe"></option>
                 </select>
                 <div class="display-flex form-block">
                     
