@@ -1,7 +1,7 @@
 var request = new XMLHttpRequest()
 
-function test() {
-  fetch('http://192.168.97.2:5000/probes')
+function selectProbes() {
+  fetch('http://192.168.1.21:5000/probes')
     .then((response) => {
       return response.json()
     })
@@ -25,7 +25,7 @@ function onSelected(){
   
 }
 
-fetch('http://192.168.97.2:5000/probe/1')
+fetch('http://192.168.1.21:5000/probe/1')
   .then((response) => {
     // var data = JSON.parse(request.response)
     // console.log(data, response)
