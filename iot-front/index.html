@@ -8,13 +8,11 @@
     <meta charset="UTF-8">
 </head>
 
-<body>
-    <img id="witness" class="img" />
+<body onLoad="init(), init2()">
     <div class="block stats-block display-flex">
-        <div class="stats-block-header">
-            <button class="button" onclick="openDial(), selectProbes()"><img class="svg-share" src="img/cog.svg"></button>
+        <div class="probeName">
+            <!-- <h1>Sonde</h1> -->
             <h1 id="probeName" class="stats-title"></h1>
-            <a class="button"><img class="svg-share" src="img/share-variant.svg"></a>
         </div>
         <div class="stats">
             <div class="stat">
@@ -27,35 +25,39 @@
                 <p id="humidity"></p>
             </div>
         </div>
-        <div class="divider-horizontal">
-
-        </div>
+        <img id="witness" class="img" />
         <div class="graph-block">
-            <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
-            <canvas id="myGraph" class="graph" width="250px" height="75px"></canvas>
+            <h3>Température</h3>
+            <canvas id="myGraph" class="myGraph"></canvas>
+            <canvas id="myGraphHumidity" class="myGraph"></canvas>
         </div>
-        <!-- <iframe
-        class="map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2597.533091923707!2d1.0718805156585605!3d49.37990707934198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDIyJzQ3LjciTiAxwrAwNCcyNi43IkU!5e0!3m2!1sfr!2sfr!4v1611210744249!5m2!1sfr!2sfr"
-             height="200" frameborder="0"
-            style="border:0;border-radius: 20px;margin-bottom: 40px;box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);"
-            allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
     </div>
-    <div class="block emoji-block">
+    <div id="map" class="map"></div>
+    </div>
+    <div class="menu">
+        <button class="button" onclick="openDial(), changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
+        <button class="button" onclick="openDial(), selectProbes()"><img class="svg" src="img/cog.svg"></button>
+        <button class="button" onclick="addProbeOpenDial()"><img class="svg" src="img/plus.svg"></button>
+        <button class="button"><img class="svg" src="img/share-variant.svg"></a>
+            <button class="button" onclick="openDial(), changeProbeB()"><img class="svg"
+                    src="img/arrow-right.svg"></button>
+
+    </div>
+    <!-- <div class="block emoji-block">
         <div id="emoji1"></div>
         <div id="emoji2"></div>
         <div id="emoji3"></div>
         <div id="emoji4"></div>
-    </div>
+    </div> -->
     <dialog id="params" class='dialog'>
-        <form method="dialog">      
+        <form method="dialog">
             <div class="form">
                 <h3>Paramètres</h3>
                 <select class="select" id="probeList" onclick="">
                     <option selected id="currentProbe"></option>
                 </select>
                 <div class="display-flex form-block">
-                    
+
                     <div class="input">
                         <h6>Nom de la sonde :</h6>
                         <input id="currentProbeName" placeholder="Nom de la sonde" type="text"></input>
@@ -79,11 +81,46 @@
                     <input class="checkbox" type="checkbox">
                     <div>Activée</div>
                 </div>
-                <button class="dialog-button" onclick="closeDial()">Valider</button>
+                <div class="buttonContainer">
+                    <button class="closeButton" onclick="addProbeCloseDial()">fermer</button>
+                    <button class="dialog-button" onclick="closeDial()">Valider</button>
+                </div>
             </div>
         </form>
     </dialog>
     <!-- <img src="img/background.svg" id="background" class="background"> -->
+    <dialog id="err" class="dialog">
+        <form>
+            <div class="errForm" id="errContent">
+                <h2 class="errTitle">Une erreur est survenue</h2>
+                <img src="./img/cotoMoon.svg" class="img">
+                <p id="errText"></p>
+                <button id="errButton" class="errButton"></button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="create" class="dialog">
+        <form id="createprobeform" method="POST" class="addForm">
+            <div class="addProbe" id="errContent">
+                <h2>Ajouter une sonde</h2>
+                <p id="createText"></p>
+                <div class="addInput">
+                    <input id="probeName-form" type="text" required placeholder="Nom">
+                    <input id="ip" type="text" required placeholder="Adresse ip">
+                </div>
+                <div class="addInput">
+                    <input id="longitude" type="number" step="any" required placeholder="Latitude">
+                    <input id="latitude" type="number" step="any" required placeholder="Longitude">
+                </div>
+                <div class="buttonContainer">
+                    <button class="closeButton" onclick="addProbeCloseDial()">fermer</button>
+                    <button id="errButton" class="errButton">AJOUTER</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC6eWR_Bv-nfSW7kXgvP0wZlwz5MP7I00&libraries=&v=weekly"></script>
     <script src="source/script/script.js"></script>
 </body>
 <footer>
