@@ -24,7 +24,7 @@ except mariadb.Error as e:
 @app.route('/probe/<probeId>', methods=['GET'])
 def home(probeId):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM probe LEFT JOIN temperatures ON probe.id = temperatures.probeId LEFT JOIN humidities ON probe.id = humidities.probeId WHERE probe.id = " + probeId)
+    cur.execute("SELECT probeName, ip, latitude, longitude, reading.temperature, reading.humiditie FROM probe JOIN reading ON probe.id = reading.probeId WHERE probe.id = " + probeId)
     json = list(cur)
     return jsonify(json)
 
@@ -51,16 +51,21 @@ def temperatures():
     return jsonify(json2)
 
 
-@app.route('/temperatures/<probeId>', methods=['GET'])
+@app.route('/reading/<probeId>', methods=['GET'])
 def reading(probeId):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM temperatures WHERE probeId = " + probeId + " ORDER BY readingDate LIMIT 0 , 6;")
+    cur.execute("SELECT temperature, humiditie, readingDate FROM reading WHERE probeId = " +
+                probeId + " ORDER BY readingDate LIMIT 0 , 7;")
     json = list(cur)
     return jsonify(json)
 
-# def createSonde():
-#       cur = conn.cursor()
-#       create_sondes = cur.execure("INSERT INTO Sondes )
+
+@app.route('/numberOfProbes', methods=['GET'])
+def numberOfProbes():
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM probe")
+    json = list(cur)
+    return jsonify(json)
 
 
 app.run(host="192.168.97.2", port=5000)
