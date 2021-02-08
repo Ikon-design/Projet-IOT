@@ -10,7 +10,6 @@ var Val_min;
 var sections;
 var xScale;
 var yScale;
-
 var humidityCanvas = [30, 30, 60, 20, 10, 40, 0]
 
 function init2() {
@@ -191,7 +190,7 @@ fetch('http://192.168.97.2:5000/numberOfProbes')
   })
 
 function changeProbe() {
-  if (probeId <= 1) {
+  if (probeId < 1) {
     probeId = nbProbe
     localStorage.setItem('probeId', probeId)
     window.location.reload()
@@ -224,7 +223,8 @@ fetch('http://192.168.97.2:5000/probe/' + probeId)
     let svgTemp = document.getElementById('svgTemp')
     let background = document.getElementById('background')
     let logo = document.getElementById('witness')
-
+    document.title = temperature + ' degrés | ' + humidity + "% d'humidité"
+    
     if (humidity <= 24) {
       logo.src = './img/sun.svg'
       svgHum.src = './img/noWater.svg'
@@ -261,7 +261,7 @@ fetch('http://192.168.97.2:5000/probe/' + probeId)
     document.getElementById('humidity').innerHTML = (data?.[0]?.[5]) || "Nan"
 
     // Dialog
-    document.getElementById('currentProbe').value = (data?.[0]?.[1])
+    // document.getElementById('currentProbe').value = (data?.[0]?.[1])
     document.getElementById('currentProbeName').value = (data?.[0]?.[1])
     document.getElementById('currentProbeIPAdresse').value = (data?.[0]?.[2])
     document.getElementById('currentProbeLatitude').value = (data?.[0]?.[3])
@@ -328,41 +328,41 @@ function createProbe() {
     })
 }
 
-function selectProbes() {
-  fetch('http://192.168.97.2:5000/probes')
-    .then((response) => {
+// function selectProbes() {
+//   fetch('http://192.168.97.2:5000/probes')
+//     .then((response) => {
 
-      // console.log(data, response)
-      return response.json()
-    })
+//       // console.log(data, response)
+//       return response.json()
+//     })
 
-    .then((data) => {
+//     .then((data) => {
 
-      //Permet de recupérer la liste de sonde et de la ajouter au select
-      for (let i = 0; i < data.length; i++) {
-        var select = document.getElementById('probeList')
-        var option = document.createElement('option')
-        select.options.length = i
-        option.text = data[i]
-        select.options.add(option, i)
-      }
+//       //Permet de recupérer la liste de sonde et de la ajouter au select
+//       for (let i = 0; i < data.length; i++) {
+//         var select = document.getElementById('probeList')
+//         var option = document.createElement('option')
+//         select.options.length = i
+//         option.text = data[i]
+//         select.options.add(option, i)
+//       }
 
-    })
+//     })
 
-    .catch((err) => {
-      let background = document.getElementById('background')
+//     .catch((err) => {
+//       let background = document.getElementById('background')
 
-      if (err = "ERR_INTERNET_DISCONNECTED") {
-        background.style.backgroundColor = 'purple'
-        console.log(err)
-      } else if (err = "ERR_CONNECTION_TIMED_OUT") {
-        background.style.backgroundColor = 'red'
-        console.log(err)
-      } else {
-        console.log(err)
-      }
-    })
-}
+//       if (err = "ERR_INTERNET_DISCONNECTED") {
+//         background.style.backgroundColor = 'purple'
+//         console.log(err)
+//       } else if (err = "ERR_CONNECTION_TIMED_OUT") {
+//         background.style.backgroundColor = 'red'
+//         console.log(err)
+//       } else {
+//         console.log(err)
+//       }
+//     })
+// }
 
 function createProbe(e) {
   e.preventDefault()
