@@ -21,13 +21,26 @@ VALUES
     );
 
 INSERT INTO
-    temperatures (probeId, reading, readingDate)
+    reading (probeId, temperature, humiditie, readingDate)
 VALUES
-    (1, 45.2, NOW()),
-    (2, 25.2, NOW());
+    (1, 25.2, 23.4, NOW()),
+    (1, 45.2, 52.4, NOW()),
+    (1, 13.2, 12.4, NOW()),
+    (1, 15.2, 24.4, NOW()),
+    (2, 34.2, 21.4, NOW()),
+    (2, 32.2, 33.4, NOW()),
+    (2, 45.2, 27.4, NOW()),
+    (3, 25.2, 23.4, NOW()),
+    (3, 45.2, 43.4, NOW()),
+    (3, 22.2, 23.5, NOW());
 
-INSERT INTO
-    humidities (probeId, reading, readingDate)
-VALUES
-    (1, 23.2, NOW()),
-    (2, 43.2, NOW());
+-- INSERT INTO
+--     temperatures (probeId, reading, readingDate)
+-- VALUES
+--     (1, 45.2, NOW()),
+--     (2, 25.2, NOW());
+-- INSERT INTO
+--     humidities (probeId, reading, readingDate)
+-- VALUES
+--     (1, 23.2, NOW()),
+--     (2, 43.2, NOW());

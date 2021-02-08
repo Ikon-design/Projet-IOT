@@ -12,16 +12,24 @@ CREATE TABLE IF NOT EXISTS probe (
     longitude FLOAT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS temperatures (
+CREATE TABLE IF NOT EXISTS reading (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     probeId INT NOT NULL,
-    reading FLOAT NOT NULL,
-    readingDate DATETIME 
-);
-
-CREATE TABLE IF NOT EXISTS humidities (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    probeId INT NOT NULL,
-    reading FLOAT NOT NULL,
+    temperature INT NOT NULL,
+    humiditie INT NOT NULL,
     readingDate DATETIME
-);
+)
+
+-- CREATE TABLE IF NOT EXISTS temperatures (
+--     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     probeId INT NOT NULL,
+--     reading FLOAT NOT NULL,
+--     readingDate DATETIME 
+-- );
+
+-- CREATE TABLE IF NOT EXISTS humidities (
+--     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     probeId INT NOT NULL,
+--     reading FLOAT NOT NULL,
+--     readingDate DATETIME
+-- );

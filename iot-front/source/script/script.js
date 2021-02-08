@@ -14,7 +14,7 @@ var yScale;
 var humidityCanvas = [30, 30, 60, 20, 10, 40, 0]
 
 function init2() {
-  fetch('http://192.168.97.2:5000/temperatures/1')
+  fetch('http://192.168.97.2:5000/reading/' + probeId)
     .then((response) => {
       return response.json()
     })
@@ -28,8 +28,8 @@ function init2() {
       var margin = 0;
       var xAxis = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun"]
       //
-      var temperatureCanvas = [data[0][0],data[1][0],data[2][0],data[3][0],data[4][0],data[5][0],data[6][0]]
-      
+      var temperatureCanvas = [data?.[0]?.[0], data?.[1]?.[0], data?.[2]?.[0], data?.[3]?.[0], data?.[4]?.[0], data?.[5]?.[0], data?.[6]?.[0]]
+
       canvas = document.getElementById("myGraph");
       context = canvas.getContext("2d", { antialias: false });
 
@@ -37,7 +37,7 @@ function init2() {
       xScale = (canvas.width - rowSize) / sections;
 
       context.fillStyle = "#363636"
-      context.imageSmoothingQuality= 'low'
+      context.imageSmoothingQuality = 'low'
       context.strokeStyle = "#D9D9D9" // Change la couleur des lignes
       context.lineCap = "round" // Change l'apsect des lignes
       context.lineJoin = "round" // Permet d'avoir les angles arrondis
@@ -75,14 +75,13 @@ function init2() {
         }
         context.stroke();
       }
-      console.log(data, 'coucou')
     })
     .catch((err) => {
       console.log(err)
     })
 }
 function init() {
-  fetch('http://192.168.97.2:5000/temperatures/1')
+  fetch('http://192.168.97.2:5000/reading/' + probeId)
     .then((response) => {
       return response.json()
     })
@@ -96,8 +95,8 @@ function init() {
       var margin = 0;
       var xAxis = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun"]
       //
-      var temperatureCanvas = [data[0][0],data[1][0],data[2][0],data[3][0],data[4][0],data[5][0],data[6][0]]
-      
+      var temperatureCanvas = [data?.[0]?.[0], data?.[1]?.[0], data?.[2]?.[0], data?.[3]?.[0], data?.[4]?.[0], data?.[5]?.[0], data?.[6]?.[0]]
+
       canvas = document.getElementById("myGraphHumidity");
       context = canvas.getContext("2d", { antialias: false });
 
@@ -105,7 +104,7 @@ function init() {
       xScale = (canvas.width - rowSize) / sections;
 
       context.fillStyle = "#363636"
-      context.imageSmoothingQuality= 'low'
+      context.imageSmoothingQuality = 'low'
       context.strokeStyle = "#D9D9D9" // Change la couleur des lignes
       context.lineCap = "round" // Change l'apsect des lignes
       context.lineJoin = "round" // Permet d'avoir les angles arrondis
@@ -143,14 +142,11 @@ function init() {
         }
         context.stroke();
       }
-      console.log(data, 'coucou')
     })
     .catch((err) => {
       console.log(err)
     })
 }
-
-
 
 function openDial() {
   dial.style.display = 'flex'
@@ -175,55 +171,104 @@ function addProbeCloseDial() {
 let mapDiv = document.getElementById('map')
 let map
 let marker
-fetch('http://192.168.97.2:5000/probe/1')
+
+let probeId = parseInt(localStorage.probeId)
+let nbProbe = parseInt(localStorage.nbProbe)
+console.log(probeId)
+if (localStorage.probeId == undefined || 0) {
+  probeId = localStorage.setItem('probeId', 1)
+  window.location.reload()
+} else {
+  probeId = parseInt(localStorage.probeId)
+}
+
+fetch('http://192.168.97.2:5000/numberOfProbes')
   .then((response) => {
     return response.json()
   })
   .then((data) => {
-    console.log(data)
-    let temperature = (data[0][7])
-    let humidity = (data[0]?.[11])
+    localStorage.setItem('nbProbe', data.length)
+  })
 
+function changeProbe() {
+  if (probeId <= 1) {
+    probeId = nbProbe
+    localStorage.setItem('probeId', probeId)
+    window.location.reload()
+  } else {
+    probeId--
+    localStorage.setItem('probeId', probeId)
+    window.location.reload()
+  }
+}
+function changeProbeB() {
+  if (probeId < nbProbe) {
+    probeId++
+    localStorage.setItem('probeId', probeId)
+    window.location.reload()
+  } else {
+    probeId = 1
+    localStorage.setItem('probeId', probeId)
+    window.location.reload()
+  }
+}
+
+fetch('http://192.168.97.2:5000/probe/' + probeId)
+  .then((response) => {
+    return response.json()
+  })
+  .then((data) => {
+    let temperature = (data[0]?.[4])
+    let humidity = (data[0]?.[5])
+    let svgHum = document.getElementById('svgHum')
+    let svgTemp = document.getElementById('svgTemp')
     let background = document.getElementById('background')
     let logo = document.getElementById('witness')
 
-    if (humidity <= 0) {
+    if (humidity <= 24) {
       logo.src = './img/sun.svg'
+      svgHum.src = './img/noWater.svg'
+      svgTemp.src = './img/thermometer.svg'
       background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
     } else if (humidity <= 25) {
       if (temperature <= 5) {
         logo.src = './img/snow.svg'
+        svgHum.src = './img/snowflake.svg'
+        svgTemp.src = './img/termeCold.svg'
         background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
       }
       else {
         logo.src = './img/rain.svg'
+        svgHum.src = './img/water20.svg'
         background.style.backgroundImage = 'linear-gradient(#B9D5E3, #AFD7F8)'
       }
     } else {
       if (temperature >= 30) {
         logo.src = './img/stormyRain.svg'
+        svgHum.src = './img/stormyWater.svg'
+        svgTemp.src = '/img/thermometer.svg'
         background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
       } else {
         logo.src = './img/rain.svg'
+        svgTemp.src = './img/water.svg'
         background.style.backgroundImage = 'linear-gradient( #B9D5E3, #AFD7F8)'
       }
     }
 
     //Data accueil
-    document.getElementById('probeName').innerHTML = (data[0][1]) || "Nan"
-    document.getElementById('temperature').innerHTML = (data[0][7]) || "Nan"
-    document.getElementById('humidity').innerHTML = (data[0][11]) || "Nan"
+    document.getElementById('probeName').innerHTML = (data?.[0]?.[0]) || "Nan"
+    document.getElementById('temperature').innerHTML = (data?.[0]?.[4]) || "Nan"
+    document.getElementById('humidity').innerHTML = (data?.[0]?.[5]) || "Nan"
 
     // Dialog
-    document.getElementById('currentProbe').value = (data[0][1])
-    document.getElementById('currentProbeName').value = (data[0][1])
-    document.getElementById('currentProbeIPAdresse').value = (data[0][2])
-    document.getElementById('currentProbeLatitude').value = (data[0][3])
-    document.getElementById('currentProbeLongitude').value = (data[0][4])
+    document.getElementById('currentProbe').value = (data?.[0]?.[1])
+    document.getElementById('currentProbeName').value = (data?.[0]?.[1])
+    document.getElementById('currentProbeIPAdresse').value = (data?.[0]?.[2])
+    document.getElementById('currentProbeLatitude').value = (data?.[0]?.[3])
+    document.getElementById('currentProbeLongitude').value = (data?.[0]?.[4])
 
-    let lat = (data[0][3])
-    let lng = (data[0][4])
-    console.log(lng, lat)
+    let lat = (data[0]?.[2])
+    let lng = (data[0]?.[3])
 
 
     map = new google.maps.Map(mapDiv, { center: { lat, lng }, zoom: 15 })
@@ -237,22 +282,17 @@ fetch('http://192.168.97.2:5000/probe/1')
     let errButton = document.getElementById('errButton')
     console.log(err)
     if (err == "ERR_INTERNET_DISCONNECTED") {
-
       background.style.backgroundColor = 'purple'
       dialErr.open = true
       dialErr.style.display = 'flex'
       errText.innerHTML = "Il semblerait que vous ne soyez pas connécté à internet. Merci de vérifier votre connexion"
       errButton.innerHTML = 'Rafraichir'
-
     } else if (err == "ERR_CONNECTION_TIMED_OUT") {
-
       background.style.backgroundColor = 'red'
       dialErr.open = true
       let field = document.createElement("BUTTON")
       field.innerHTML = 'text'
       dialErr.appendChild(field)
-
-
     } else {
       background.style.backgroundColor = 'purple'
       dialErr.open = true
@@ -270,7 +310,7 @@ function createProbe() {
   })
     .then((response) => {
       var data = JSON.parse(request.response)
-      console.log(data, response)
+
       return response.json()
     })
     .catch((err) => {
@@ -341,6 +381,11 @@ function createProbe(e) {
   })
     .then((data) => {
       console.log(data)
+      if (data.status == 200) {
+        setInterval(() => {
+          addProbeCloseDial()
+        }, 3000);
+      }
     })
     .catch((err) => {
       console.log(err)

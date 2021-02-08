@@ -216,14 +216,6 @@ input, .select{
     z-index: 1;
 }
 
-.button:hover{
-    transition: ease-in 140ms;
-    background-color: #76cfff25;
-    border: 3px #76cfff solid
-}
-.button:active{
-    background-color: #b3e4ff;
-}
 
 @media screen and (max-device-width: 992px) {
     .body{
@@ -309,7 +301,7 @@ input, .select{
         flex-direction: column;
     }
     .svg{
-        width: 50%;
+        width: 30%;
         margin: 0px;
         padding: 0px;
     }
@@ -320,9 +312,10 @@ input, .select{
         align-self: flex-end;
     }
     .menu{
-        border-top: 10px rgb(240, 240, 240) solid;
         background-color: white;
+        height: 140px;
         display: flex;
+        align-items: center;
         justify-content: space-around;
         width: 100vw;
         align-self: flex-end;
@@ -336,10 +329,12 @@ input, .select{
         height: 400px;
     }
     .button{
-        height: 123px;
-        border: 5px #76D0FF solid;
-        border-radius: 40px;
-        width: 123px;
+        height: 100%;
+        margin: 0px;
+        padding: 10px;
+        border: 0px;
+        border-radius: 0px;
+        width: 100%;
     }
     .addProbe{
         display: flex;
