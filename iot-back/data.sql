@@ -23,9 +23,9 @@ VALUES
 INSERT INTO
     reading (probeId, temperature, humiditie, readingDate)
 VALUES
-    (1, 25.2, 23.4, NOW()),
-    (1, 45.2, 52.4, NOW()),
-    (1, 13.2, 12.4, NOW()),
+    (4, 25.2, 23.4, NOW()),
+    (4, 45.2, 52.4, NOW()),
+    (4, 13.2, 12.4, NOW()),
     (1, 15.2, 24.4, NOW()),
     (2, 34.2, 21.4, NOW()),
     (2, 32.2, 33.4, NOW()),

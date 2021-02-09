@@ -172,8 +172,8 @@ let map
 let marker
 
 let probeId = parseInt(localStorage.probeId)
-let nbProbe = parseInt(localStorage.nbProbe)
-console.log(probeId)
+let nbProbe = parseInt(localStorage.nbProbe) - 1
+console.log(nbProbe)
 if (localStorage.probeId == undefined || 0) {
   probeId = localStorage.setItem('probeId', 1)
   window.location.reload()
@@ -190,9 +190,9 @@ fetch('http://192.168.97.2:5000/numberOfProbes')
   })
 
 function changeProbe() {
-  if (probeId < 1) {
-    probeId = nbProbe
-    localStorage.setItem('probeId', probeId)
+  if (probeId <= 0) {
+    console.log(nbProbe)
+    localStorage.setItem('probeId', nbProbe)
     window.location.reload()
   } else {
     probeId--
@@ -206,72 +206,83 @@ function changeProbeB() {
     localStorage.setItem('probeId', probeId)
     window.location.reload()
   } else {
-    probeId = 1
+    probeId = 0
     localStorage.setItem('probeId', probeId)
     window.location.reload()
   }
 }
 
-fetch('http://192.168.97.2:5000/probe/' + probeId)
+
+fetch('http://192.168.97.2:5000/probes')
   .then((response) => {
     return response.json()
   })
   .then((data) => {
-    let temperature = (data[0]?.[4])
-    let humidity = (data[0]?.[5])
+
+    //Data accueil
+    document.getElementById('probeName').innerHTML = (data[probeId]?.[0]) || "Nan"
     let svgHum = document.getElementById('svgHum')
     let svgTemp = document.getElementById('svgTemp')
     let background = document.getElementById('background')
     let logo = document.getElementById('witness')
-    document.title = temperature + ' degrés | ' + humidity + "% d'humidité"
-    
-    if (humidity <= 24) {
-      logo.src = './img/sun.svg'
-      svgHum.src = './img/noWater.svg'
-      svgTemp.src = './img/thermometer.svg'
-      background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
-    } else if (humidity <= 25) {
-      if (temperature <= 5) {
-        logo.src = './img/snow.svg'
-        svgHum.src = './img/snowflake.svg'
-        svgTemp.src = './img/termeCold.svg'
-        background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
-      }
-      else {
-        logo.src = './img/rain.svg'
-        svgHum.src = './img/water20.svg'
-        background.style.backgroundImage = 'linear-gradient(#B9D5E3, #AFD7F8)'
-      }
-    } else {
-      if (temperature >= 30) {
-        logo.src = './img/stormyRain.svg'
-        svgHum.src = './img/stormyWater.svg'
-        svgTemp.src = '/img/thermometer.svg'
-        background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
-      } else {
-        logo.src = './img/rain.svg'
-        svgTemp.src = './img/water.svg'
-        background.style.backgroundImage = 'linear-gradient( #B9D5E3, #AFD7F8)'
-      }
-    }
+    let lat = (data?.[probeId]?.[2])
+    let lng = (data?.[probeId]?.[3])
+    console.log(lng, lat)
 
-    //Data accueil
-    document.getElementById('probeName').innerHTML = (data?.[0]?.[0]) || "Nan"
-    document.getElementById('temperature').innerHTML = (data?.[0]?.[4]) || "Nan"
-    document.getElementById('humidity').innerHTML = (data?.[0]?.[5]) || "Nan"
+    fetch('http://192.168.97.2:5000/probe/' + probeId) 
+      .then((response) => {
+        return response.json()
+      })
+      .then((reading) => {
+        let temperature = (reading?.[0]?.[4])
+        let humidity = (reading?.[0]?.[5])
+        console.log(probeId)
+        // Change la balise title de la page html
+        document.title = temperature + '° | ' + humidity + "% d'humidité"
 
-    // Dialog
-    // document.getElementById('currentProbe').value = (data?.[0]?.[1])
-    document.getElementById('currentProbeName').value = (data?.[0]?.[1])
-    document.getElementById('currentProbeIPAdresse').value = (data?.[0]?.[2])
-    document.getElementById('currentProbeLatitude').value = (data?.[0]?.[3])
-    document.getElementById('currentProbeLongitude').value = (data?.[0]?.[4])
+        document.getElementById('temperature').innerHTML = temperature || "Nan"
+        document.getElementById('humidity').innerHTML = temperature || "Nan"
 
-    let lat = (data[0]?.[2])
-    let lng = (data[0]?.[3])
+        if (humidity <= 24) {
+          logo.src = './img/sun.svg'
+          svgHum.src = './img/noWater.svg'
+          svgTemp.src = './img/thermometer.svg'
+          background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
+        } else if (humidity <= 25) {
+          if (temperature <= 5) {
+            logo.src = './img/snow.svg'
+            svgHum.src = './img/snowflake.svg'
+            svgTemp.src = './img/termeCold.svg'
+            background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
+          }
+          else {
+            logo.src = './img/rain.svg'
+            svgHum.src = './img/water20.svg'
+            background.style.backgroundImage = 'linear-gradient(#B9D5E3, #AFD7F8)'
+          }
+        } else {
+          if (temperature >= 30) {
+            logo.src = './img/stormyRain.svg'
+            svgHum.src = './img/stormyWater.svg'
+            svgTemp.src = '/img/thermometer.svg'
+            background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
+          } else {
+            logo.src = './img/rain.svg'
+            svgTemp.src = './img/water.svg'
+            background.style.backgroundImage = 'linear-gradient( #B9D5E3, #AFD7F8)'
+          }
+        }
+      })
 
+    console.log(data)
 
-    map = new google.maps.Map(mapDiv, { center: { lat, lng }, zoom: 15 })
+    // Data dialog Update
+    document.getElementById('currentProbeName').value = (data?.[0]?.[0])
+    document.getElementById('currentProbeIPAdresse').value = (data?.[0]?.[1])
+    document.getElementById('currentProbeLatitude').value = (data?.[0]?.[2])
+    document.getElementById('currentProbeLongitude').value = (data?.[0]?.[3])
+
+    map = new google.maps.Map(mapDiv, { center: { lat, lng }, zoom: 16 })
     marker = new google.maps.Marker({ position: { lat, lng }, map })
 
   })

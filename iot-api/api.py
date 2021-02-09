@@ -42,6 +42,19 @@ def createSonde():
     conn.commit()
     return jsonify(nameProbe, ip, latitude, longitude)
 
+@app.route('/updateProbe', methods=['UPDATE'])
+def updateProbes():
+    jsdata = request.form
+    probeId = jsdata['id']
+    latitude = float(jsdata['latitude'])
+    longitude = float(jsdata['longitude'])
+    nameProbe = jsdata['probeName']
+    ip = jsdata['ip']
+    cur = conn.cursor()
+    cur.execute("UPDATE probe SET probeName = %s, ip = %s, latitude = %s, longitude = %s WHERE id = %s")
+    update_probe = cur.execute(sql, (nameProbe, ip, latitude, longitude, probeId))
+    conn.commit()
+    return jsonify(nameProbe, ip, latitude, longitude, probeId)
 
 @app.route('/probes', methods=['GET'])
 def temperatures():

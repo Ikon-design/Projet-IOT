@@ -10,37 +10,48 @@
 </head>
 
 <body onLoad="init(), init2()">
-    <div class="block stats-block display-flex">
-        <div class="probeName">
-            <!-- <h1>Sonde</h1> -->
-            <h1 id="probeName" class="stats-title"></h1>
-        </div>
-        <div class="stats">
-            <div class="stat">
-                <img class="img-stats" id="svgTemp">
-                <p id="temperature"></p>
+    <div class="block">
+        <button class="button changeDesk" onclick="changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
+        <div class="stats-block display-flex">
+            <img id="witness" class="img" />
+            <div class="probeName">
+                <!-- <h1>Sonde</h1> -->
+                <h1 id="probeName" class="stats-title"></h1>
             </div>
-            <div class="divider"></div>
-            <div class="stat">
-                <img class="img-stats" id="svgHum">
-                <p id="humidity"></p>
+            <div class="stats">
+                <div class="stat">
+                    <img class="img-stats" id="svgTemp">
+                    <p id="temperature"></p>
+                </div>
+                <div class="divider"></div>
+                <div class="stat">
+                    <img class="img-stats" id="svgHum">
+                    <p id="humidity"></p>
+                </div>
+            </div>
+            <div class="graph-block">
+                <div class="containerGraph">
+                    <h3>Température</h3>
+                    <canvas id="myGraph" class="myGraph"></canvas>
+                </div>
+                <div class="containerGraph">
+                    <h3>humidité</h3>
+                    <canvas id="myGraphHumidity" class="myGraph"></canvas>
+                </div>
             </div>
         </div>
-        <img id="witness" class="img" />
-        <div class="graph-block">
-            <h3>Température</h3>
-            <canvas id="myGraph" class="myGraph"></canvas>
-            <canvas id="myGraphHumidity" class="myGraph"></canvas>
-        </div>
+        <button class="button changeDesk" onclick="changeProbeB()"><img class="svg" src="img/arrow-right.svg"></button>
     </div>
     <div id="map" class="map"></div>
     </div>
     <div class="menu">
-        <button class="button" onclick="changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
-        <button class="button" onclick="openDial(), selectProbes()"><img class="svg" src="img/cog.svg"></button>
+        <button class="button changeMob" onclick="changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
+        <button class="button" onclick="openDial()"><img class="svg" src="img/cog.svg"></button>
         <button class="button" onclick="addProbeOpenDial()"><img class="svg" src="img/plus.svg"></button>
         <button class="button"><img class="svg" src="img/share-variant.svg"></button>
-        <button class="button" onclick="changeProbeB(), reload()"><img class="svg" src="img/arrow-right.svg"></button>
+        <button class="button changeMob" onclick="changeProbeB(), reload()">
+            <img class="svg" src="img/arrow-right.svg">
+        </button>
 
     </div>
     <!-- <div class="block emoji-block">
@@ -51,39 +62,38 @@
     </div> -->
     <dialog id="params" class='dialog'>
         <form method="dialog">
-            <div class="form">
+            <div class="form paramDialog">
                 <h3>Paramètres</h3>
-                <!-- <select class="select" id="probeList" onclick="" disabled>
-                    <option selected id="currentProbe"></option>
-                </select> -->
                 <div class="display-flex form-block">
-
                     <div class="input">
                         <h6>Nom de la sonde :</h6>
-                        <input id="currentProbeName" placeholder="Nom de la sonde" type="text"></input>
+                        <input id="currentProbeName" placeholder="Nom de la sonde" type="text" class="paramInput"
+                            required>
                     </div>
                     <div class="input">
                         <h6>Adresse IP :</h6>
-                        <input id="currentProbeIPAdresse" placeholder="Adresse IP" type="text">
+                        <input id="currentProbeIPAdresse" placeholder="Adresse IP" type="text" class="paramInput"
+                            required>
                     </div>
                 </div>
                 <div class="display-flex form-block">
                     <div class="input">
                         <h6>Longitude :</h6>
-                        <input id="currentProbeLongitude" placeholder="Longitude" type="text">
+                        <input id="currentProbeLongitude" placeholder="Longitude" type="text" class="paramInput"
+                            required>
                     </div>
                     <div class="input">
                         <h6>Latitude :</h6>
-                        <input id="currentProbeLatitude" placeholder="Latitude" type="text">
+                        <input id="currentProbeLatitude" placeholder="Latitude" type="text" class="paramInput" required>
                     </div>
                 </div>
-                <div class="checkbox-block">
+                <!-- <div class="checkbox-block">
                     <input class="checkbox" type="checkbox">
                     <div>Activée</div>
-                </div>
+                </div> -->
                 <div class="buttonContainer">
-                    <button class="closeButton" onclick="closeDial()">fermer</button>
-                    <button class="dialog-button" onclick="closeDial()">Valider</button>
+                    <button class="dialog-button closeButton" onclick="closeDial()">fermer</button>
+                    <button class="dialog-button validateButton" onclick="closeDial()">Valider</button>
                 </div>
             </div>
         </form>
@@ -100,22 +110,22 @@
         </form>
     </dialog>
     <dialog id="create" class="dialog">
-        <form id="createprobeform" method="POST" class="addForm">
+        <form id="createprobeform" method="POST" class="form paramDialog">
+            <h2>Ajouter une sonde</h2>
             <div class="addProbe" id="errContent">
-                <h2>Ajouter une sonde</h2>
                 <p id="createText"></p>
-                <div class="addInput">
-                    <input id="probeName-form" type="text" required placeholder="Nom">
-                    <input id="ip" type="text" required placeholder="Adresse ip">
+                <div class="input">
+                    <input id="probeName-form" type="text" required placeholder="Nom" class="paramInput">
+                    <input id="ip" type="text" required placeholder="Adresse ip" class="paramInput">
                 </div>
-                <div class="addInput">
-                    <input id="longitude" type="number" step="any" required placeholder="Latitude">
-                    <input id="latitude" type="number" step="any" required placeholder="Longitude">
+                <div class="input">
+                    <input id="longitude" type="number" step="any" required placeholder="Latitude" class="paramInput">
+                    <input id="latitude" type="number" step="any" required placeholder="Longitude" class="paramInput">
                 </div>
-                <div class="buttonContainer">
-                    <button class="closeButton" onclick="addProbeCloseDial()">fermer</button>
-                    <button id="errButton" class="errButton">AJOUTER</button>
-                </div>
+            </div>
+            <div class="buttonContainer">
+                <button class="closeButton" onclick="addProbeCloseDial()">fermer</button>
+                <button id="errButton" class="validateButton">AJOUTER</button>
             </div>
         </form>
     </dialog>
