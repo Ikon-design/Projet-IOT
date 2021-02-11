@@ -11,7 +11,8 @@
 
 <body onLoad="init(), init2()">
     <div class="block">
-        <button class="button changeDesk" onclick="changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
+        <button class="button changeDesk" onclick="changeProbe()"><img class="svgButton"
+                src="img/arrow-left.svg"></button>
         <div class="stats-block display-flex">
             <img id="witness" class="img" />
             <div class="probeName">
@@ -40,31 +41,23 @@
                 </div>
             </div>
         </div>
-        <button class="button changeDesk" onclick="changeProbeB()"><img class="svg" src="img/arrow-right.svg"></button>
+        <button class="button changeDesk" onclick="changeProbeB()"><img class="svgButton"
+                src="img/arrow-right.svg"></button>
     </div>
     <div id="map" class="map"></div>
-    </div>
     <div class="menu">
         <button class="button changeMob" onclick="changeProbe()"><img class="svg" src="img/arrow-left.svg"></button>
         <button class="button" onclick="openDial()"><img class="svg" src="img/cog.svg"></button>
         <button class="button" onclick="addProbeOpenDial()"><img class="svg" src="img/plus.svg"></button>
-        <button class="button"><img class="svg" src="img/share-variant.svg"></button>
-        <button class="button changeMob" onclick="changeProbeB(), reload()">
-            <img class="svg" src="img/arrow-right.svg">
-        </button>
-
+        <button id="shareButton" class="button" onclick="shareDialfunc()"><img class="svg"
+                src="img/share-variant.svg"></button>
+        <button class="button changeMob" onclick="changeProbeB()"><img class="svg" src="img/arrow-right.svg"></button>
     </div>
-    <!-- <div class="block emoji-block">
-        <div id="emoji1"></div>
-        <div id="emoji2"></div>
-        <div id="emoji3"></div>
-        <div id="emoji4"></div>
-    </div> -->
     <dialog id="params" class='dialog'>
-        <form method="dialog">
-            <div class="form paramDialog">
-                <h3>Paramètres</h3>
-                <div class="display-flex form-block">
+        <form method="dialog" class="form">
+            <h2>Paramètres</h2>
+            <div class="paramDialog">
+                <div class="form-block">
                     <div class="input">
                         <h6>Nom de la sonde :</h6>
                         <input id="currentProbeName" placeholder="Nom de la sonde" type="text" class="paramInput"
@@ -76,7 +69,7 @@
                             required>
                     </div>
                 </div>
-                <div class="display-flex form-block">
+                <div class="form-block">
                     <div class="input">
                         <h6>Longitude :</h6>
                         <input id="currentProbeLongitude" placeholder="Longitude" type="text" class="paramInput"
@@ -87,18 +80,13 @@
                         <input id="currentProbeLatitude" placeholder="Latitude" type="text" class="paramInput" required>
                     </div>
                 </div>
-                <!-- <div class="checkbox-block">
-                    <input class="checkbox" type="checkbox">
-                    <div>Activée</div>
-                </div> -->
-                <div class="buttonContainer">
-                    <button class="dialog-button closeButton" onclick="closeDial()">fermer</button>
-                    <button class="dialog-button validateButton" onclick="closeDial()">Valider</button>
-                </div>
+            </div>
+            <div class="buttonContainer">
+                <button class="dialog-button closeButton" onclick="closeDial()">fermer</button>
+                <button class="dialog-button validateButton" onclick="updateProbe()">Valider</button>
             </div>
         </form>
     </dialog>
-    <!-- <img src="img/background.svg" id="background" class="background"> -->
     <dialog id="err" class="dialog">
         <form>
             <div class="errForm" id="errContent">
@@ -110,23 +98,59 @@
         </form>
     </dialog>
     <dialog id="create" class="dialog">
-        <form id="createprobeform" method="POST" class="form paramDialog">
+        <form id="createprobeform" method="POST" class="form">
             <h2>Ajouter une sonde</h2>
-            <div class="addProbe" id="errContent">
-                <p id="createText"></p>
-                <div class="input">
-                    <input id="probeName-form" type="text" required placeholder="Nom" class="paramInput">
-                    <input id="ip" type="text" required placeholder="Adresse ip" class="paramInput">
+            <div class="paramDialog" id="errContent">
+                <div class="display-flex form-block">
+                    <div class="input">
+                        <h6>Nom de la sonde :</h6>
+                        <input id="probeName-form" type="text" required placeholder="Nom" class="paramInput">
+                    </div>
+                    <div class="input">
+                        <h6>Adresse IP :</h6>
+                        <input id="ip" type="text" required placeholder="Adresse ip" class="paramInput">
+                    </div>
                 </div>
-                <div class="input">
-                    <input id="longitude" type="number" step="any" required placeholder="Latitude" class="paramInput">
-                    <input id="latitude" type="number" step="any" required placeholder="Longitude" class="paramInput">
+                <div class="display-flex form-block">
+                    <div class="input">
+                        <h6>Longitude :</h6>
+                        <input id="longitude" type="number" step="any" required placeholder="Latitude"
+                            class="paramInput">
+                    </div>
+                    <div class="input">
+                        <h6>Latitude :</h6>
+                        <input id="latitude" type="number" step="any" required placeholder="Longitude"
+                            class="paramInput">
+                    </div>
                 </div>
             </div>
             <div class="buttonContainer">
                 <button class="closeButton" onclick="addProbeCloseDial()">fermer</button>
                 <button id="errButton" class="validateButton">AJOUTER</button>
             </div>
+            <p id="createText"></p>
+        </form>
+    </dialog>
+    <dialog id="share" class="dialogShare">
+        <div class="dialShare">
+            <h2>Partagez votre sonde</h2>
+            <div class="display-flex shareButton twitterColor">
+                <img class="svg" src="./img/twitter.svg">
+                <a target="_blank" class="twitter" id="shareTwitter">Twitter</a>
+            </div>
+            <!-- <div class="display-flex shareButton">
+                <img class="svg" src="./img/facebook.svg">
+                <a target="_blank" class="facebook" id="shareFacebook">Facebook</a>
+            </div> -->
+            <div class="display-flex shareButton">
+                <img class="svg" src="./img/gmail.svg">
+                <a target="_blank" class="mail" id="shareMail">Mail</a>
+            </div>
+            <div class="buttonContainer">
+                <button class="closeButton" onclick="shareCloseDial()">fermer</button>
+            </div>
+        </div>
+        <p id="createText"></p>
         </form>
     </dialog>
     <script

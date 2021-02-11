@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS iot;
 
 USE iot;
 
-CREATE TABLE IF NOT EXISTS probe (
+CREATE TABLE IF NOT EXISTS probes (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     probeName VARCHAR(100) NOT NULL,
     ip VARCHAR(100) NOT NULL,
@@ -12,24 +12,18 @@ CREATE TABLE IF NOT EXISTS probe (
     longitude FLOAT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS reading (
+CREATE TABLE IF NOT EXISTS readings (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     probeId INT NOT NULL,
     temperature INT NOT NULL,
-    humiditie INT NOT NULL,
+    humidity INT NOT NULL,
     readingDate DATETIME
-)
+);
 
--- CREATE TABLE IF NOT EXISTS temperatures (
---     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
---     probeId INT NOT NULL,
---     reading FLOAT NOT NULL,
---     readingDate DATETIME 
--- );
-
--- CREATE TABLE IF NOT EXISTS humidities (
---     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
---     probeId INT NOT NULL,
---     reading FLOAT NOT NULL,
---     readingDate DATETIME
--- );
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  psw VARCHAR(20) NOT NULL,
+  firstName VARCHAR(20) NOT NULL,
+  fullName VARCHAR(20) NOT NULL,
+  mail VARCHAR(80) NOT NULL
+);

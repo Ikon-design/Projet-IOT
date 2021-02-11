@@ -1,5 +1,5 @@
 INSERT INTO
-    probe (probeName, ip, latitude, longitude)
+    probes (probeName, ip, latitude, longitude)
 VALUES
     (
         "Cesi",
@@ -21,18 +21,36 @@ VALUES
     );
 
 INSERT INTO
-    reading (probeId, temperature, humiditie, readingDate)
+    readings (probeId, temperature, humidity, readingDate)
 VALUES
-    (4, 25.2, 23.4, NOW()),
-    (4, 45.2, 52.4, NOW()),
-    (4, 13.2, 12.4, NOW()),
-    (1, 15.2, 24.4, NOW()),
-    (2, 34.2, 21.4, NOW()),
-    (2, 32.2, 33.4, NOW()),
-    (2, 45.2, 27.4, NOW()),
-    (3, 25.2, 23.4, NOW()),
-    (3, 45.2, 43.4, NOW()),
-    (3, 22.2, 23.5, NOW());
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (1, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (2, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW()),
+    (3, RAND() * 50, RAND() * 100, NOW());
 
 -- INSERT INTO
 --     temperatures (probeId, reading, readingDate)
