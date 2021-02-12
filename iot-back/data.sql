@@ -51,14 +51,3 @@ VALUES
     (3, RAND() * 50, RAND() * 100, NOW()),
     (3, RAND() * 50, RAND() * 100, NOW()),
     (3, RAND() * 50, RAND() * 100, NOW());
-
--- INSERT INTO
---     temperatures (probeId, reading, readingDate)
--- VALUES
---     (1, 45.2, NOW()),
---     (2, 25.2, NOW());
--- INSERT INTO
---     humidities (probeId, reading, readingDate)
--- VALUES
---     (1, 23.2, NOW()),
---     (2, 43.2, NOW());

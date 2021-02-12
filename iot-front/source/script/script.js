@@ -11,16 +11,13 @@ var Val_min;
 var sections;
 var xScale;
 var yScale;
-var humidityCanvas = [30, 30, 60, 20, 10, 40, 0]
-
-//fonction d'ini des graphs
-
 let mapDiv = document.getElementById('map')
 let map
 let marker
-
 let probeId = parseInt(localStorage.probeId)
 let nbProbe = parseInt(localStorage.nbProbe) - 1
+
+let succesText = document.getElementById('createText')
 
 //Permet de setup a 1 l'id de sonde si celui ci est a 0
 if (localStorage.probeId == undefined || 0 && localStorage.readingId == undefined) {
@@ -64,6 +61,116 @@ function changeProbeB() {
   }
 }
 
+function init2() {
+  fetch('http://192.168.97.2:5000/reading/' + localStorage.readingId)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      var xAxis = []
+      let initCurrentHoure = new Date()
+      let takeCurrentHours = initCurrentHoure.getUTCHours() - 7
+      for (a = 0; takeCurrentHours + a < initCurrentHoure.getUTCHours(); a++) {
+        xAxis[a] = takeCurrentHours + a + 1 + " h"
+        for (i = 0; i < data.length; i++) {
+          let initHoures2 = new Date(data[i].readingDate)
+          test2 = initHoures2.getUTCHours()
+        }
+      }
+      canvas = document.getElementById("myGraph");
+      var myChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: [xAxis[0], xAxis[1], xAxis[2], xAxis[3], xAxis[4], xAxis[5], xAxis[6]],
+          datasets: [{
+            label: 'Temperature',
+            data: [data?.[0]?.humidity, data?.[1]?.humidity, data?.[2]?.humidity, data?.[3]?.humidity, data?.[4]?.humidity, data?.[5]?.humidity, data?.[6]?.humidity],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.0)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+//fonction d'ini des graphs
+function init() {
+  fetch('http://192.168.97.2:5000/reading/' + localStorage.readingId)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      var xAxis = []
+      let initCurrentHoure = new Date()
+      let takeCurrentHours = initCurrentHoure.getUTCHours() - 7
+      for (a = 0; takeCurrentHours + a < initCurrentHoure.getUTCHours(); a++) {
+        xAxis[a] = takeCurrentHours + a + 1 + " h"
+        for (i = 0; i < data.length; i++) {
+          let initHoures2 = new Date(data[i].readingDate)
+          test2 = initHoures2.getUTCHours()
+        }
+      }
+      canvas = document.getElementById("myGraphHumidity");
+      var myChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: [xAxis[0], xAxis[1], xAxis[2], xAxis[3], xAxis[4], xAxis[5], xAxis[6]],
+          datasets: [{
+            label: 'Humidité',
+            data: [data?.[0]?.temperature, data?.[1]?.temperature, data?.[2]?.temperature, data?.[3]?.temperature, data?.[4]?.temperature, data?.[5]?.temperature, data?.[6]?.temperature],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.0)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
 
 fetch('http://192.168.97.2:5000/probes')
   .then((response) => {
@@ -79,15 +186,15 @@ fetch('http://192.168.97.2:5000/probes')
     let logo = document.getElementById('witness')
     let lat = (data?.[probeId]?.latitude)
     let lng = (data?.[probeId]?.longitude)
-    console.log(data, 'data')
+    // console.log(data, 'data')
 
     fetch('http://192.168.97.2:5000/readingProbe/' + data[probeId]?.id)
       .then((response) => {
         return response.json()
       })
       .then((reading) => {
-        let temperature = (reading?.[0]?.temperature)
-        let humidity = (reading?.[0]?.humidity)
+        let temperature = localStorage.temperature
+        let humidity = localStorage.humidity
         localStorage.setItem('readingId', data[probeId]?.id)
         localStorage.setItem('temperature', reading?.[0]?.temperature)
         localStorage.setItem('humidity', reading?.[0]?.humidity)
@@ -96,37 +203,60 @@ fetch('http://192.168.97.2:5000/probes')
         // Change la balise title de la page html
         document.title = localStorage.temperature + '° | ' + localStorage.humidity + "% d'humidité"
 
+        if (temperature == 'undefined') {
+          document.getElementById('temperature').innerHTML = 0
+          document.getElementById('humidity').innerHTML = 0
+        } else {
+          document.getElementById('temperature').innerHTML = localStorage.temperature || "Nan"
+          document.getElementById('humidity').innerHTML = localStorage.humidity || "Nan"
+        }
 
-        document.getElementById('temperature').innerHTML = localStorage.temperature || "Nan"
-        document.getElementById('humidity').innerHTML = localStorage.humidity || "Nan"
-
-        if (localStorage.humidity <= 24) {
+        if (localStorage.humidity <= 10) {
           logo.src = './img/sun.svg'
           svgHum.src = './img/noWater.svg'
-          svgTemp.src = './img/thermometer.svg'
           background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
-        } else if (localStorage.humidity <= 25) {
           if (localStorage.temperature <= 5) {
-            logo.src = './img/snow.svg'
-            svgHum.src = './img/snowflake.svg'
             svgTemp.src = './img/termeCold.svg'
-            background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
+          }
+          else if (localStorage.temperature <= 20) {
+            svgTemp.src = './img/thermeMed.svg'
           }
           else {
-            logo.src = './img/rain.svg'
+            svgTemp.src = './img/thermeHot.svg'
+          }
+        } else if (localStorage.humidity <= 25) {
+          background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
+          if (localStorage.temperature <= 5) {
+            svgTemp.src = './img/termeCold.svg'
             svgHum.src = './img/water20.svg'
-            background.style.backgroundImage = 'linear-gradient(#B9D5E3, #AFD7F8)'
+            logo.src = './img/snow.svg'
+          }
+          else if (localStorage.temperature <= 20) {
+            svgTemp.src = './img/thermeMed.svg'
+            svgHum.src = './img/water20.svg'
+            logo.src = './img/cloud.svg'
+          }
+          else {
+            logo.src = './img/sun.svg'
+            svgHum.src = './img/water20.svg'
+            svgTemp.src = './img/thermeHot.svg'
           }
         } else {
-          if (localStorage.temperature >= 30) {
+          background.style.backgroundImage = "linear-gradient(#76D0FF, #AFD7F8)"
+          if (localStorage.temperature <= 5) {
+            svgTemp.src = './img/termeCold.svg'
+            svgHum.src = './img/snowflake.svg'
+            logo.src = './img/snow.svg'
+          }
+          else if (localStorage.temperature <= 20) {
+            svgTemp.src = './img/thermeMed.svg'
+            svgHum.src = './img/water.svg'
+            logo.src = './img/rain.svg'
+          }
+          else {
             logo.src = './img/stormyRain.svg'
             svgHum.src = './img/stormyWater.svg'
-            svgTemp.src = '/img/thermometer.svg'
-            background.style.backgroundImage = 'linear-gradient(#B6C6CE, #E4E8EB)'
-          } else {
-            logo.src = './img/rain.svg'
-            svgTemp.src = './img/water.svg'
-            background.style.backgroundImage = 'linear-gradient( #B9D5E3, #AFD7F8)'
+            svgTemp.src = './img/thermeHot.svg'
           }
         }
       })
@@ -216,9 +346,10 @@ function updateProbe() {
   })
     .then((data) => {
       if (data.status == 200) {
+        succesText.style.display = "flex"
         setInterval(() => {
           addProbeCloseDial()
-          window.location.reload()
+          window.reload()
         }, 2000);
       }
     })
@@ -229,7 +360,7 @@ function updateProbe() {
 
 document.getElementById('createprobeform').addEventListener('submit', createProbe)
 
-let graph = "Il fait actuellement " + localStorage.temperature + " degrès et il y a " + localStorage.humidite + " d'humidité"
+let graph = "Il fait actuellement " + localStorage.temperature + " degrès et il y a " + localStorage.humidity + " d'humidité"
 let share = document.getElementById('shareTwitter')
 share.href = 'http://twitter.com/share?url=' + graph
 let shareMail = document.getElementById('shareMail')
@@ -259,141 +390,5 @@ function shareDialfunc() {
 function shareCloseDial() {
   shareDial.style.display = 'none'
   shareDial.close()
-}
-
-function init2() {
-  fetch('http://192.168.97.2:5000/reading/' + localStorage.readingId)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      sections = 7;
-      Val_max = 60;
-      Val_min = -20;
-      var stepSize = 15;
-      var columnSize = 20;
-      var rowSize = 0;
-      var margin = 0;
-      var xAxis = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun"]
-      var temperatureCanvas = [data?.[0]?.temperature, data?.[1]?.temperature, data?.[2]?.temperature, data?.[3]?.temperature, data?.[4]?.temperature, data?.[5]?.temperature, data?.[6]?.temperature]
-
-      canvas = document.getElementById("myGraph");
-      context = canvas.getContext("2d", { antialias: false });
-
-      yScale = (canvas.height - columnSize) / (Val_max - Val_min);
-      xScale = (canvas.width - rowSize) / sections;
-
-      context.fillStyle = "#363636"
-      context.imageSmoothingQuality = 'low'
-      context.strokeStyle = "#D9D9D9" // Change la couleur des lignes
-      context.lineCap = "round" // Change l'apsect des lignes
-      context.lineJoin = "round" // Permet d'avoir les angles arrondis
-      context.lineWidth = "2" // Permet de changer la taille des lignes
-      context.beginPath();
-
-      for (i = 1; i <= sections; i++) {
-        var x = i * xScale;
-        context.fillText(xAxis[i], x, columnSize);
-        context.moveTo(x, columnSize);
-      }
-
-      var count = 0;
-      for (scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
-        var y = columnSize + (yScale * count * stepSize);
-        context.fillText(scale, margin, y);
-        context.moveTo(rowSize, y)
-        context.lineTo(canvas.width, y)
-        count++;
-      }
-      context.stroke();
-
-      context.translate(rowSize, canvas.height + Val_min * yScale);
-      context.scale(1, -1 * yScale);
-      context.lineCap = "round"
-      context.lineJoin = "round"
-      context.strokeStyle = "#FF0066"
-      plotData(temperatureCanvas)
-
-      function plotData(dataSet) {
-        context.beginPath();
-        context.moveTo(0, dataSet[0]);
-        for (i = 1; i < sections; i++) {
-          context.lineTo(i * xScale, dataSet[i]);
-        }
-        context.stroke();
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
-//fonction d'ini des graphs
-function init() {
-  fetch('http://192.168.97.2:5000/reading/' + localStorage.readingId)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      console.log(probeId)
-      sections = 7;
-      Val_max = 100;
-      Val_min = -20;
-      var stepSize = 15;
-      var columnSize = 20;
-      var rowSize = 0;
-      var margin = 0;
-      var xAxis = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun"]
-      //
-      var temperatureCanvas = [data?.[0]?.humidity, data?.[1]?.humidity, data?.[2]?.humidity, data?.[3]?.humidity, data?.[4]?.humidity, data?.[5]?.humidity, data?.[6]?.humidity]
-
-      canvas = document.getElementById("myGraphHumidity");
-      context = canvas.getContext("2d", { antialias: false });
-
-      yScale = (canvas.height - columnSize) / (Val_max - Val_min);
-      xScale = (canvas.width - rowSize) / sections;
-
-      context.fillStyle = "#363636"
-      context.imageSmoothingQuality = 'low'
-      context.strokeStyle = "#D9D9D9" // Change la couleur des lignes
-      context.lineCap = "round" // Change l'apsect des lignes
-      context.lineJoin = "round" // Permet d'avoir les angles arrondis
-      context.lineWidth = "2" // Permet de changer la taille des lignes
-      context.beginPath();
-
-      for (i = 1; i <= sections; i++) {
-        var x = i * xScale;
-        context.fillText(xAxis[i], x, columnSize);
-        context.moveTo(x, columnSize);
-      }
-
-      var count = 0;
-      for (scale = Val_max; scale >= Val_min; scale = scale - stepSize) {
-        var y = columnSize + (yScale * count * stepSize);
-        context.fillText(scale, margin, y);
-        context.moveTo(rowSize, y)
-        context.lineTo(canvas.width, y)
-        count++;
-      }
-      context.stroke();
-
-      context.translate(rowSize, canvas.height + Val_min * yScale);
-      context.scale(1, -1 * yScale);
-      context.lineCap = "round"
-      context.lineJoin = "round"
-      context.strokeStyle = "#FF0066"
-      plotData(temperatureCanvas)
-
-      function plotData(dataSet) {
-        context.beginPath();
-        context.moveTo(0, dataSet[0]);
-        for (i = 1; i < sections; i++) {
-          context.lineTo(i * xScale, dataSet[i]);
-        }
-        context.stroke();
-      }
-    })
-    .catch((err) => {
-      console.log(err)
-    })
 }
 

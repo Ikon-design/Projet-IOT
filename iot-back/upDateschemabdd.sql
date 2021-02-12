@@ -1,15 +1,8 @@
 USE iot;
 
 ALTER TABLE
-    reading
+    readings
 ADD
     (
-        FOREIGN KEY (probeId) REFERENCES probe(id)
+        FOREIGN KEY (probeId) REFERENCES probes(id)
     );
-
--- ALTER TABLE
---     humidities
--- ADD
---     (
---         FOREIGN KEY (probeId) REFERENCES probe(id)
---     );
