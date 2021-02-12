@@ -203,7 +203,7 @@ fetch('http://192.168.97.2:5000/probes')
         // Change la balise title de la page html
         document.title = localStorage.temperature + '° | ' + localStorage.humidity + "% d'humidité"
 
-        if (temperature == 'undefined') {
+        if (temperature == 'undefined' || humidity == 'undefined') {
           document.getElementById('temperature').innerHTML = 0
           document.getElementById('humidity').innerHTML = 0
         } else {
@@ -260,7 +260,6 @@ fetch('http://192.168.97.2:5000/probes')
           }
         }
       })
-
     // fait remonter les datas dans la dialog d'update
     document.getElementById('currentProbeName').value = (data?.[probeId]?.probeName)
     document.getElementById('currentProbeIPAdresse').value = (data?.[probeId]?.ip)
@@ -271,32 +270,9 @@ fetch('http://192.168.97.2:5000/probes')
     // Variable pour google map
     map = new google.maps.Map(mapDiv, { center: { lat, lng }, zoom: 16 })
     marker = new google.maps.Marker({ position: { lat, lng }, map })
-
   })
   .catch((err) => {
-    let background = document.getElementById('background')
-    let dialErr = document.getElementById('err')
-    let errText = document.getElementById('errText')
-    let errButton = document.getElementById('errButton')
     console.log(err)
-    // if (err == "ERR_INTERNET_DISCONNECTED") {
-    //   dialErr.open = true
-    //   dialErr.style.display = 'flex'
-    //   errText.innerHTML = "Il semblerait que vous ne soyez pas connécté à internet. Merci de vérifier votre connexion"
-    //   errButton.innerHTML = 'Rafraichir'
-    // } else if (err == "ERR_CONNECTION_TIMED_OUT") {
-    //   background.style.backgroundColor = 'red'
-    //   dialErr.open = true
-    //   let field = document.createElement("BUTTON")
-    //   field.innerHTML = 'text'
-    //   dialErr.appendChild(field)
-    // } else {
-    //   dialErr.open = true
-    //   dialErr.style.display = 'flex'
-    //   errText.innerHTML = "Il semblerait que vous ne soyez pas connécté à internet. Merci de vérifier votre connexion"
-    //   errButton.innerHTML = 'Rafraichir'
-    //   console.log(err)
-    // }
   })
 
 
@@ -346,10 +322,9 @@ function updateProbe() {
   })
     .then((data) => {
       if (data.status == 200) {
-        succesText.style.display = "flex"
         setInterval(() => {
           addProbeCloseDial()
-          window.reload()
+          window.location.reload()
         }, 2000);
       }
     })
