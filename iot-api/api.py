@@ -67,7 +67,7 @@ def reading(probeId):
 @app.route('/numberOfProbes', methods=['GET'])
 def numberOfProbes():
     cur = conn.cursor()
-    cur.execute("SELECT  FROM probes")
+    cur.execute("SELECT * FROM probes")
     json = list(cur)
     return jsonify(json)
 
