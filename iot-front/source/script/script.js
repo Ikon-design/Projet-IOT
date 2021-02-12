@@ -110,30 +110,9 @@ function init2() {
           }
         }
       })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
-//fonction d'ini des graphs
-function init() {
-  fetch('http://192.168.97.2:5000/reading/' + localStorage.readingId)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      var xAxis = []
-      let initCurrentHoure = new Date()
-      let takeCurrentHours = initCurrentHoure.getUTCHours() - 7
-      for (a = 0; takeCurrentHours + a < initCurrentHoure.getUTCHours(); a++) {
-        xAxis[a] = takeCurrentHours + a + 1 + " h"
-        for (i = 0; i < data.length; i++) {
-          let initHoures2 = new Date(data[i].readingDate)
-          test2 = initHoures2.getUTCHours()
-        }
-      }
-      canvas = document.getElementById("myGraphHumidity");
-      var myChart = new Chart(canvas, {
+
+      canvas2 = document.getElementById("myGraphHumidity");
+      var myChart = new Chart(canvas2, {
         type: 'line',
         data: {
           labels: [xAxis[0], xAxis[1], xAxis[2], xAxis[3], xAxis[4], xAxis[5], xAxis[6]],
@@ -206,6 +185,7 @@ fetch('http://192.168.97.2:5000/probes')
         if (temperature == 'undefined' || humidity == 'undefined') {
           document.getElementById('temperature').innerHTML = 0
           document.getElementById('humidity').innerHTML = 0
+          // window.location.reload()
         } else {
           document.getElementById('temperature').innerHTML = localStorage.temperature || "Nan"
           document.getElementById('humidity').innerHTML = localStorage.humidity || "Nan"
@@ -260,6 +240,7 @@ fetch('http://192.168.97.2:5000/probes')
           }
         }
       })
+
     // fait remonter les datas dans la dialog d'update
     document.getElementById('currentProbeName').value = (data?.[probeId]?.probeName)
     document.getElementById('currentProbeIPAdresse').value = (data?.[probeId]?.ip)
@@ -270,6 +251,7 @@ fetch('http://192.168.97.2:5000/probes')
     // Variable pour google map
     map = new google.maps.Map(mapDiv, { center: { lat, lng }, zoom: 16 })
     marker = new google.maps.Marker({ position: { lat, lng }, map })
+
   })
   .catch((err) => {
     console.log(err)

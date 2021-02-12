@@ -67,7 +67,7 @@ def reading(probeId):
 @app.route('/numberOfProbes', methods=['GET'])
 def numberOfProbes():
     cur = conn.cursor()
-    cur.execute("SELECT id FROM probes")
+    cur.execute("SELECT  FROM probes")
     json = list(cur)
     return jsonify(json)
 
@@ -96,7 +96,6 @@ def post():
     cur = conn.cursor()
     sql = "INSERT INTO readings (probeId, temperature, humidity, readingDate) VALUES (%s, %s, %s, NOW())"
     create_reading = cur.execute(sql, (probeId, temperature, humidite))
-    print(create_reading)
     conn.commit()
     return jsonify(probeId, temperature, humidite)
 
